@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decrypt File | SecureCrypt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #a6b3c6 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card {
+            border-radius: 15px;
+            border: none;
+            background-color: #e9ecef;
+            box-shadow: 4px 3px black;
+            border: 1.8px solid black;
+        }
+        
+        .card-header {
+             background: linear-gradient(to right, #4361ee, #3f37c9);
+            color: #e9ecef;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .btn-primary {
+             background: linear-gradient(to right, #4361ee, #3f37c9);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .file-input {
+            border: 2px dashed black;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background-color: #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input:hover {
+            border-color: #4361ee;
+            background-color: #e9ecef;
+        }
+        
+        .file-input i {
+            font-size: 3rem;
+            color: #4361ee;
+            margin-bottom: 15px;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #3f37c9;
+        }
+        
+        .file-info {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-left: 3px solid #3f37c9;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .last_btn{
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        .list-group-item{
+             background-color:#e9ecef;
+        }
+        
+        /* Added for password field */
+        .password-field {
+            margin-top: 20px;
+        }
+        
+        .password-field input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-outline-primary back-btn">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <i class="fas fa-unlock me-2"></i>Decrypt Your File
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label for="fileInput" class="form-label fw-bold mb-3">Select encrypted file (.safe):</label>
+                                <div class="file-input" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fas fa-file-import"></i>
+                                    <h5>Drag & Drop or Click to Browse</h5>
+                                    <p class="text-muted mb-0">Files must be in the SecureCrypt encrypted format</p>
+                                </div>
+                                <input type="file" class="form-control d-none" id="fileInput" name="file" required>
+                                <div id="fileInfo" class="file-info d-none">
+                                    <i class="fas fa-file me-2"></i>
+                                    <span id="fileName"></span>
+                                    <span id="fileSize" class="text-muted ms-2"></span>
+                                </div>
+                            </div>
+                            
+                            <!-- Added password field -->
+                            <div class="password-field">
+                                <label for="password" class="form-label fw-bold mb-3">Enter Decryption Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Enter the password used for encryption" required>
+                                <p class="text-muted mt-2"><small>This must match the password you used when encrypting</small></p>
+                            </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-unlock me-2"></i>Decrypt & Download
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>About Decryption</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-key me-2 text-info"></i>
+                                <strong>Password Protected:</strong> Enter the same password used during encryption
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-shield-alt me-2 text-info"></i>
+                                <strong>AES-256 Decryption:</strong> Your file is decrypted using AES-256 in CBC mode
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-file-download me-2 text-info"></i>
+                                <strong>Original Format:</strong> The file is restored to its original format and name
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-user-shield me-2 text-info"></i>
+                                <strong>Secure Processing:</strong> Decryption happens in your browser - your files never leave your device
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="last_btn">
+    <a href="/encrypt" class="btn btn-primary btn-lg">
+                    <i class="fas fa-lock me-2"></i>Encrypt a File
+                </a></div>
+
+    <script>
+        // File selection handling
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                fileName.textContent = file.name;
+                
+                // Format file size
+                const size = file.size;
+                const i = Math.floor(Math.log(size) / Math.log(1024));
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                fileSize.textContent = (size / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+                
+                fileInfo.classList.remove('d-none');
+            }
+        });
+        
+        // Drag and drop functionality
+        const dropArea = document.querySelector('.file-input');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('bg-light');
+            dropArea.style.borderColor = '#4cc9f0';
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('bg-light');
+            dropArea.style.borderColor = '#ccc';
+        }
+        
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length) {
+                fileInput.files = files;
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

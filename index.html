@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureCrypt - File Encryption Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --dark: #212529;
+            --light:#e9ecef;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #cad4e1 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 4px 4px black;
+            border: 1.8px solid black;
+            transition: transform 0.3s;
+            background-color: #e9ecef;
+
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: #e9ecef;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            transform: scale(1.05);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: #e9ecef;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .feature-card {
+            height: 100%;
+            text-align: center;
+            padding: 25px 15px;
+        }
+        
+        .file-input {
+            border: 2px dashed #e9ecef;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background-color: #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input:hover {
+            border-color: var(--primary);
+            background-color: #e9ecef;
+        }
+        
+        .file-input i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .instruction-card {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .footer {
+            background: rgba(0,0,0,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary) !important;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            color: #e9ecef;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .file-info {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-left: 3px solid var(--success);
+        }
+
+        .container-fluid{
+            box-shadow: 3px 3px black;
+            border: 1.8px solid black;
+            border-radius: 7px;
+            padding: 8px;
+            background: #e9ecef;
+
+        }
+
+
+        .mb-4{
+            padding-top: 0px;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <i class="fas fa-lock me-2"></i>SecureCrypt
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/encrypt">Encrypt</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/decrypt">Decrypt</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-bold mb-3">Secure File Encryption Tool</h1>
+            <p class="lead text-muted">Protect your files with military-grade AES-256 encryption directly in your browser</p>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>AES-256 Encryption</h4>
+                    <p class="text-muted">Authenticated AES-256 Encryption. Miltary-grade security with HMAC verification and PBKDF2 key derivation.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Mobile Friendly</h4>
+                    <p class="text-muted">Fully responsive design that works perfectly on all devices.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <h4>Easy to Use</h4>
+                    <p class="text-muted">Simple interface for encrypting and decrypting files in just a few clicks.</p>
+                </div>
+            </div>
+        </div>
+
+        
+          <div class="text-center mb-5">
+            <h3 class="mb-4">Ready to Secure Your Files?</h3>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="/encrypt" class="btn btn-primary btn-lg">
+                    <i class="fas fa-lock me-2"></i>Encrypt a File
+                </a>
+                <a href="/decrypt" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-unlock me-2"></i>Decrypt a File
+                </a>
+            </div>
+        </div>
+        
+        <!-- How It Works Section -->
+        <div class="card mb-5">
+            <div class="card-header">
+                How It Works
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-4">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h5>Upload Your File</h5>
+                                <p class="mb-0">Select the file you want to encrypt from your device.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start mb-4">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h5>Set Password</h5>
+                                <p class="mb-0">Create a strong password to protect your file.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-4">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h5>Download Encrypted File</h5>
+                                <p class="mb-0">Download your encrypted file with .safe extension.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h5>Decrypt When Needed</h5>
+                                <p class="mb-0">Upload the encrypted file and enter password to restore.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer text-muted">
+            <p class="mb-0">SecureCrypt &copy; 2023 | Your files are processed securely in your browser and never stored on our servers.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

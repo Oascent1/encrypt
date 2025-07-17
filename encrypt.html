@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt File | SecureCrypt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #a6b3c6 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .card {
+            border-radius: 15px;
+            border: 1.8px solid black;
+            background-color: #e9ecef;
+            box-shadow: 4px 4px black;
+            margin-bottom: 10px;
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, #4361ee, #3f37c9);
+            color: #e9ecef;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #4361ee, #3f37c9);
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .file-input {
+            border: 2px dashed #000000;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background-color: #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-input:hover {
+            border-color: #4361ee;
+            background-color: #e9ecef;
+        }
+        
+        .file-input i {
+            font-size: 3rem;
+            color: #4361ee;
+            margin-bottom: 15px;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #4361ee !important;
+        }
+        
+        .file-info {
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-left: 3px solid #4cc9f0;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .icon {
+            padding-top: 2px;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        button {
+            background: linear-gradient(to right, #4361ee, #3f37c9);
+            color: #e9ecef;
+            border-radius: 10px;
+            font-size: large;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #iconPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .popup-header {
+            text-align: center;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+
+        .close-btn {
+            background: #e9ecef;
+            color: #e9ecef;
+            border: none;
+            border-radius: 50%;
+            width: 10px;
+            height: 10px;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            font-size: smaller;
+            text-align: center;
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .icon-item:hover {
+            background: #1a6bbc0d;
+            transform: scale(1.1);
+        }
+
+        .icon-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .icon-item span {
+            display: block;
+            margin-top: 5px;
+            font-size: 10px;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;  
+        }
+
+        .lastbtn{
+            text-align: center;
+            padding-top: 15px;
+            color:#3f37c9;
+        }
+
+        .btmnote{
+            text-align:center;
+            font-size: medium;
+            font-family: monospace;
+            padding-top: 10px 20px;
+            border: 1.8px solid black;
+            border-radius: 70px;
+            margin: 10px auto;
+            background-color: #e9ecef;
+            box-shadow: 4px 3px black;
+            font-weight: 800;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .list-group-item{
+            background-color:#e9ecef;
+        }
+        
+        /* Added for password field */
+        .password-field {
+            margin-top: 20px;
+        }
+        
+        .password-field input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+        }
+
+        h6 {
+
+            font-size: smaller;
+            font-style: italic;
+            font-weight: 100;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn btn-outline-primary back-btn">
+            <i class="fas fa-arrow-left me-2"></i>Back
+        </a>
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <i class="fas fa-lock me-2"></i>Encrypt Your File
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="mb-4">
+                                <label for="fileInput" class="form-label fw-bold mb-3">Select file to encrypt:</label>
+                                <div class="file-input" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h5>Drag & Drop or Click to Browse</h5>
+                                    <p class="text-muted mb-0">Supports all file types (documents, images, videos, etc.)</p>
+                                    <h6>Up to 3GB</h6>
+                                </div>
+                                <input type="file" class="form-control d-none" id="fileInput" name="file" required>
+                                <div id="fileInfo" class="file-info d-none">
+                                    <i class="fas fa-file me-2"></i>
+                                    <span id="fileName"></span>
+                                    <span id="fileSize" class="text-muted ms-2"></span>
+                                </div>
+                                
+                            </div>
+                                                        <!-- Added password field -->
+                            <div class="password-field">
+                                <label for="password" class="form-label fw-bold mb-3">Set Encryption Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Create a strong password" required>
+                                <p class="text-muted mt-2"><small>You'll need this password to decrypt the file. Make it memorable!</small></p>
+                            </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-lock me-2"></i>Encrypt & Download
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <details>
+                <summary style="font-size: x-small; text-align: center; border: 1.8px solid rgb(109, 108, 108); border-radius: 10px; max-width: 215px; margin: 0px auto; background:grey; color: white;">How To Edit Encrypted Filename</summary>
+                <p><h5 style="font-size:smaller;">You can change the <span style="color:#4361ee">file name</span>. Keep <span style="color:brown">'encrypted_'</span> , <span style="color:brown">'.safe'</span> and <span style="color:brown">file type</span> the same.<br>
+                example:<br>
+                <strong><span style="color:#4361ee">myfile<span style="color:brown">.txt</span></span> -> gets encrypted to<br><span style="color:brown">'encrypted_</span><span style="color:#4361ee">myfile</span><span style="color:brown">.txt.safe'</span><br>
+            you can change it to '<span style="color:brown">encrypted_</span><span style="color:#4361ee">whateveryouwant</span><span style="color:brown">.txt.safe'</span><br></strong>
+        example 2:<br><strong><span style="color:#4361ee"> horrormovie</span><span style="color:brown">.mp4</span> -> gets encrypted to<br><span style="color:brown">'encrypted_</span><span style="color:#4361ee">horrormovie</span><span style="color:brown">.mp4.safe</span><br>
+    can change to <span style="color:brown">'encrypted_</span><span style="color:#4361ee">favemovie</span><span style="color:brown">.mp4.safe'</span></strong></h5></p> <br><h5 style="font-weight:100; font-size: x-small">if in blue, you can change, if in red, keep the same!</h5></details>
+
+   
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>About Encryption</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="fas fa-key me-2 text-primary"></i>
+                                <strong>AES-256 Encryption:</strong> Your file is encrypted with military-grade AES-256 in CBC mode
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-shield-alt me-2 text-primary"></i>
+                                <strong>Password Protected:</strong> Your password secures the encryption key
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-save me-2 text-primary"></i>
+                                <strong>Safe Format:</strong> Encrypted files have .safe extension for easy identification
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-cloud me-2 text-primary"></i>
+                                <strong>Privacy First:</strong> Your files are processed in your browser and never leave your device
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <p class="btmnote">Before you decrypt your files, get some icons for more anonymity</p>
+
+    <div class="icon"><button id="iconBtn"><i class="fas fa-icons"></i> <strong>ICONS</strong></button>
+    </div>
+    
+       <div id="overlay"></div>
+    <div id="iconPopup">
+        <div class="popup-header">
+            <h2>Select an Icon</h2>
+            <div class="close-btn"></div>
+        </div>
+        <div class="icon-grid">
+            <!-- Icon items will be dynamically added here -->
+        </div>
+    </div>
+
+    <div class="lastbtn">
+    <a href="/decrypt" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-unlock me-2"></i>Decrypt a File
+                </a></div>
+
+    <script>
+        // File selection handling
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+    
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                fileName.textContent = file.name;
+                
+                // Format file size
+                const size = file.size;
+                const i = Math.floor(Math.log(size) / Math.log(1024));
+                const sizes = ['B', 'KB', 'MB', 'GB'];
+                fileSize.textContent = (size / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+                
+                fileInfo.classList.remove('d-none');
+            }
+        });
+
+        
+        // Drag and drop functionality
+        const dropArea = document.querySelector('.file-input');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            dropArea.classList.add('bg-light');
+            dropArea.style.borderColor = '#4361ee';
+        }
+        
+        function unhighlight() {
+            dropArea.classList.remove('bg-light');
+            dropArea.style.borderColor = '#ccc';
+        }
+        
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length) {
+                fileInput.files = files;
+                const event = new Event('change');
+                fileInput.dispatchEvent(event);
+            }
+        }
+
+        const iconBtn = document.getElementById('iconBtn');
+        const iconPopup = document.getElementById('iconPopup');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.querySelector('.close-btn');
+        const iconGrid = document.querySelector('.icon-grid');
+
+        // Sample icons - replace with your actual icon paths
+        const icons = [
+            {name: 'PS2', path: 'static/aps2.ico', download: 'static/aps2.ico'},
+            {name: 'Email', path: 'static/em.ico', download: 'static/em.ico'},
+            {name: 'Linux', path: 'static/lix.ico', download: 'static/lix.ico'},
+            {name: 'Lion', path: 'static/lion.ico', download: 'static/lion.ico'},
+            {name: 'Lion2', path: 'static/li2.ico', download: 'static/li2.ico'},
+            {name: 'Trash', path: 'static/trash.ico', download: 'static/trash.ico'},
+            {name: 'Flash', path: 'static/fla.ico', download: 'static/fla.ico'},
+            {name: 'Cloud', path: 'static/cloud.ico', download: 'static/cloud.ico'},
+            {name: 'File', path: 'static/fil.ico', download: 'static/fil.ico'},
+            {name: 'Gears', path: 'static/settings.ico', download: 'static/settings.ico'},
+            {name: 'Music', path: 'static/music1.ico', download: 'static/music1.ico'},
+            {name: 'Transfer', path: 'static/transf.ico', download: 'static/transf.ico'},
+        ];
+
+        // Create icon items
+        icons.forEach(icon => {
+        const iconItem = document.createElement('div');
+        iconItem.className = 'icon-item';
+        iconItem.innerHTML = `
+        <img src="${icon.path}" alt="${icon.name}">
+        <span>${icon.name}</span>
+        <a href="${icon.download}" download="${icon.name}.ico" class="download-link" style="display: none;"></a>
+        `;
+        iconGrid.appendChild(iconItem);
+
+        // Directly trigger download when icon is clicked
+        iconItem.addEventListener('click', () => {
+        const downloadLink = iconItem.querySelector('.download-link');
+        downloadLink.click();
+        });
+        });
+
+        // Open popup
+        iconBtn.addEventListener('click', () => {
+            iconPopup.style.display = 'block';
+            overlay.style.display = 'block';
+        });
+
+        // Close popup
+        closeBtn.addEventListener('click', closePopup);
+        overlay.addEventListener('click', closePopup);
+
+        // Close with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePopup();
+        });
+
+        function closePopup() {
+            iconPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
